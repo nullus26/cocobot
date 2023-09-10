@@ -1,0 +1,1 @@
+A Discord bot for a Discord challenge, fitting isn't it?
