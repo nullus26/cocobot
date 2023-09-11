@@ -1,24 +1,27 @@
 import discord
-from discord.ext import commands
 
-TOKEN = "."
+TOKEN = "MTE1MDA4NjUwNTQ4MjY4NjUzNQ.GGRnv4.DrkOv8c97zqqvP9LbTq-MycOU3LwI3DHjorNKY"
 intents = discord.Intents.default()
 intents.message_content = True
 
-client = commands.Bot(command_prefix='/', intents=intents)
-
+client = discord.Client(intents=intents)
 
 @client.event
 async def on_ready():
     print('bot is ready')
 
 @client.event
-async def on_message(message):
-    print(message.author, message.content, message.channel.id)
-
-@client.command()
-async def hello(ctx):
-    await client.send_message("hello")
-
+async def on_message(msg):
+    if msg.author == client.user:
+        return
+    
+    if msg.content == "/coco":
+        await msg.channel.send(':coconut:')
+    
+    #if cocotime
+        #if message not coco
+            #get cococount and check for record
+        #else
+            #cococount++
 
 client.run(TOKEN)
