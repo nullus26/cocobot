@@ -1,47 +1,87 @@
 import discord
+from discord import app_commands
+from discord.ext import commands
 
-TOKEN = "."
 intents = discord.Intents.default()
 intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
+TOKEN = "MTE1MDA4NjUwNTQ4MjY4NjUzNQ.G5qU7w.STXo2U-FZp-FDW5krWz7rpUSCOWpbcHMwfnVJk"
 
-client = discord.Client(intents=intents)
+emoji = "\U0001F965"
 
 cocotime = False
 cococount = 0
+record = 0
 
-@client.event
+def read_record():
+     try:
+          with open('record.txt', 'r') as file:
+               return int(file.read())
+     except FileNotFoundError:
+          return 0
+     
+def update_record(count):
+     current = read_record()
+     if count > current:
+          with open('record.txt', 'w') as file:
+               file.write(str(count))
+               print('record actualizado')
+          return True
+     return False
+
+
+@bot.event
 async def on_ready():
-    print('bot is ready')
+        print("bot is up and running")
+        try:
+            synced = await bot.tree.sync()
+            print(f"synced {len(synced)} command(s)")
+        except Exception as e:
+             print(e) 
 
-@client.event
-async def on_message(msg):
+
+@bot.tree.command(name="coco")
+async def say(interaction: discord.Interaction):
+      await interaction.response.send_message(emoji)
+
+
+@bot.tree.command(name="cocotime")
+async def cococadena(interaction: discord.Interaction):
+     global cocotime, cococount
+
+     if cocotime:
+          await interaction.response.send_message("Cocotime ya empezó, cabeza de coco!!")
+     else:
+          await interaction.response.send_message("Cocotime! Intentemos hacer la cadena de cocos mas larga del server!")
+          await interaction.followup.send(emoji)
+          cocotime = True
+          cococount = 1
+
+
+@bot.event
+async def on_message(message):
+
     global cocotime, cococount
     
-    if msg.author == client.user:
+    if message.author == bot.user:
         return
     
-    if msg.content == "/coco":
-        await msg.channel.send(':coconut:')
-    
-    if msg.content == "/cocotime":
-        #pretty message goes here
-        await msg.channel.send("cocotime! let's start a chain of :coconut: !")
-        cocotime = True
-        #if message not coco
-            #get cococount and check for record
-        #else
-            #cococount++
-    
-    if cocotime:
-        if msg.author == client.user:
-            pass
 
-        if msg.content != ":coconut:" and msg.author != client.user:
-            await msg.channel.send(f"YOU BLEW IT!!!! max record is {cococount}")
-            print(cococount)
-            cococount = 0
-            return
+    if cocotime and message.content == emoji:
+         cococount +=1
+    elif cocotime:
+         await message.channel.send(f"Cocotime se terminó! llegamos a {cococount}. NT muchachos... NT...")
+         
+         #sistema de record
+         if update_record(cococount):
+              await message.channel.send(f"...Pero llegamos a un nuevo record de {cococount}!")
+         cocotime = False
+         cococount = 0
+
+    await bot.process_commands(message)
         
-        cococount += 1
 
-client.run(TOKEN)
+        
+
+    await bot.process_commands(message)
+bot.run(TOKEN)
