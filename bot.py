@@ -5,7 +5,7 @@ from discord.ext import commands
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
-TOKEN = "MTE1MDA4NjUwNTQ4MjY4NjUzNQ.G5qU7w.STXo2U-FZp-FDW5krWz7rpUSCOWpbcHMwfnVJk"
+TOKEN = "MTE1MDA4NjUwNTQ4MjY4NjUzNQ.Ght3z4.2n1KLvX4BNeqUj5xcr9o-LSWVjgsFt6ujYEs8E"
 
 emoji = "\U0001F965"
 
@@ -70,7 +70,7 @@ async def on_message(message):
     if cocotime and message.content == emoji:
          cococount +=1
     elif cocotime:
-         await message.channel.send(f"Cocotime se terminó! llegamos a {cococount}. NT muchachos... NT...")
+         await message.channel.send(f"Cocotime se terminó! llegamos a {cococount}. Pero hubiera sido mucho mas si no hubiera sido por {message.author.mention}")
          
          #sistema de record
          if update_record(cococount):
