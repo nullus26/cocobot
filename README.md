@@ -1,4 +1,4 @@
-##A Discord bot for a Discord challenge, fitting isn't it?
+A Discord bot for a Discord challenge, fitting isn't it?
 Responds to certain commands and keeps track of a chain of messages. The record for the longest message chain is stored in a record.txt file.
 --------------------------------------------------------------------
 1. Create the bot by going to https://discord.com/developers/applications and creating a new app.
